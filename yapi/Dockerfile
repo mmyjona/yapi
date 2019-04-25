@@ -1,8 +1,8 @@
 # --- download ---
 
-FROM alpine:3.9.3 as download
+FROM alpine:latest as download
 
-ENV YAPI_VERSION 1.5.11
+ENV YAPI_VERSION 1.5.14 
 
 RUN wget https://github.com/YMFE/yapi/archive/v${YAPI_VERSION}.tar.gz
 RUN tar xzf v${YAPI_VERSION}.tar.gz
@@ -21,9 +21,9 @@ RUN sed -i "s|yapi.path.join(yapi.WEBROOT_RUNTIME, 'init.lock')|yapi.path.join(y
 
 # --- build ---
 
-FROM node:7.6-alpine as build
+FROM node:alpine as build
 
-ENV YAPI_VERSION 1.5.11
+ENV YAPI_VERSION 1.5.14
 
 COPY --from=download /yapi-${YAPI_VERSION} /yapi/vendors
 
@@ -40,7 +40,7 @@ RUN git clone -b master https://github.com/vishnubob/wait-for-it.git wait-for-it
 
 # --- prod ---
 
-FROM node:7.6-alpine as prod
+FROM node:alpine as prod
 
 MAINTAINER v7lin <v7lin@qq.com>
 
